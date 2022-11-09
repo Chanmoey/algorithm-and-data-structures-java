@@ -21,7 +21,7 @@ public class SortingHelper {
     }
 
     public static <E extends Comparable<E>> void sortTest(String clazzPath, String methodName, E[] arr) {
-        sortTest(clazzPath, methodName, Object[].class, arr);
+        sortTest(clazzPath, methodName, Comparable[].class, arr);
     }
 
     public static <E extends Comparable<E>> void sortTest(String clazzPath, String methodName, Class<?> parameterClazz, E[] arr) {

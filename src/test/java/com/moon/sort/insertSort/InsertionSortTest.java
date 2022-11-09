@@ -24,7 +24,8 @@ public class InsertionSortTest {
         int[] dataSize = {10000, 100000};
         for (int n : dataSize) {
             Integer[] arr = ArrayGenerator.generateRandomArray(n, n);
-            SortingHelper.sortTest("com.moon.sort.insertionsort.InsertionSort", "sort", arr);
+            SortingHelper.sortTest("com.moon.sort.insertionsort.InsertionSort",
+                    "sort", arr);
         }
     }
 
@@ -33,7 +34,8 @@ public class InsertionSortTest {
         int[] dataSize = {10000, 100000};
         for (int n : dataSize) {
             Integer[] arr = ArrayGenerator.generateRandomArray(n, n);
-            SortingHelper.sortTest("com.moon.sort.insertionsort.InsertionSort", "sortBetter", arr);
+            SortingHelper.sortTest("com.moon.sort.insertionsort.InsertionSort",
+                    "sortBetter", arr);
         }
     }
 
@@ -43,8 +45,20 @@ public class InsertionSortTest {
         for (int n : dataSize) {
             Integer[] arr = ArrayGenerator.generateRandomArray(n, n);
             Integer[] arr2 = Arrays.copyOf(arr, arr.length);
-            SortingHelper.sortTest("com.moon.sort.insertionsort.InsertionSort", "sort", arr);
-            SortingHelper.sortTest("com.moon.sort.insertionsort.InsertionSort", "sortBetter", arr2);
+            SortingHelper.sortTest("com.moon.sort.insertionsort.InsertionSort",
+                    "sort", arr);
+            SortingHelper.sortTest("com.moon.sort.insertionsort.InsertionSort",
+                    "sortBetter", arr2);
+        }
+    }
+
+    @Test
+    public void selectionSort2BenchMark() {
+        int[] dataSize = {10000, 100000};
+        for (int n : dataSize) {
+            Integer[] arr = ArrayGenerator.generateRandomArray(n, n);
+            SortingHelper.sortTest("com.moon.sort.insertionsort.InsertionSort",
+                    "sort2", arr);
         }
     }
 }

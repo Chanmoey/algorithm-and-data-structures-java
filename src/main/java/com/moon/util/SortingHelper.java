@@ -21,9 +21,13 @@ public class SortingHelper {
     }
 
     public static <E extends Comparable<E>> void sortTest(String clazzPath, String methodName, E[] arr) {
+        sortTest(clazzPath, methodName, Object[].class, arr);
+    }
+
+    public static <E extends Comparable<E>> void sortTest(String clazzPath, String methodName, Class<?> parameterClazz, E[] arr) {
         try {
             Class<?> clazz = Class.forName(clazzPath);
-            Method sort = clazz.getDeclaredMethod(methodName, Comparable[].class);
+            Method sort = clazz.getDeclaredMethod(methodName, parameterClazz);
             long startTime = System.nanoTime();
             sort.invoke(clazz, (Object) arr);
             long endTime = System.nanoTime();

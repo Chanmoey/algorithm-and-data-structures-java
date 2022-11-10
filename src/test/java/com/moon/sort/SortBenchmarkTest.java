@@ -9,7 +9,7 @@ import java.util.Arrays;
 /**
  * @author Chanmoey
  */
-public class SortBenchmark {
+public class SortBenchmarkTest {
 
     @Test
     public void twoSortWithOrderArrayBenchmark() {

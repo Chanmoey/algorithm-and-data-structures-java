@@ -122,15 +122,19 @@ public class Array<E> {
     public E remove(int index) {
         checkIndex(index);
         E rem = (E) data[index];
-        System.arraycopy(data, index + 1, data, index, size - index);
+
+        // 如果是删除最后一个元素，不需要进行额外的处理，是需要size--即可。否则需要将index以后的元素往前移一位。
+        if (index < size - 1) {
+            System.arraycopy(data, index + 1, data, index, size - index);
+        }
         size--;
 
         // 释放索引，帮助垃圾回收
         data[size] = null;
 
-        // 缩容
-        if (size < (data.length >> 2)) {
-            grow(data.length >> 2);
+        // 缩容，懒惰缩容，防止复杂的震荡。但元素个数等于数组容量的0.25倍才锁容，且只缩容一半。
+        if (size <= (data.length >> 2) && (data.length >> 1) != 0) {
+            grow(data.length >> 1);
         }
 
         return rem;
@@ -143,7 +147,7 @@ public class Array<E> {
     }
 
     private void grow() {
-        grow((size + 1) << 2);
+        grow((size + 1) << 1);
     }
 
     private void grow(int capacity) {

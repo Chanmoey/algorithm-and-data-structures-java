@@ -3,15 +3,15 @@ package com.moon.array;
 /**
  * @author Chanmoey
  */
-public class Array {
+public class Array<E> {
 
-    private int[] data;
+    private Object[] data;
     private int size;
 
-    private static final int[] DEFAULT_CAPACITY_EMPTY_ELEMENT_DATA = {};
+    private static final Object[] DEFAULT_CAPACITY_EMPTY_ELEMENT_DATA = {};
 
     public Array() {
-        this(16);
+        this(0);
     }
 
     /**
@@ -23,7 +23,7 @@ public class Array {
         if (capacity == 0) {
             this.data = DEFAULT_CAPACITY_EMPTY_ELEMENT_DATA;
         } else {
-            this.data = new int[capacity];
+            this.data = new Object[capacity];
         }
         size = 0;
     }
@@ -40,11 +40,11 @@ public class Array {
         return this.size == 0;
     }
 
-    public void addFirst(int e) {
+    public void addFirst(E e) {
         add(0, e);
     }
 
-    public void addLast(int e) {
+    public void addLast(E e) {
         add(size, e);
     }
 
@@ -56,9 +56,14 @@ public class Array {
      * @param index 待插入的位置
      * @param e     元素
      */
-    public void add(int index, int e) {
+    public void add(int index, E e) {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException("index must >= 0 and index <= " + size);
+        }
+
+        // 数组已满，调用grow()扩容
+        if (size == data.length) {
+            grow();
         }
 
         System.arraycopy(data, index, data, index + 1, size - index);
@@ -66,32 +71,20 @@ public class Array {
         size++;
     }
 
-    private void grow() {
-        if (size < 0) {
-            throw new IllegalArgumentException("Size Must bigger than 0");
-        }
-        if (size == 0) {
-            size = 2;
-        }
-        int[] newData = new int[this.data.length << 2];
-        System.arraycopy(data, 0, newData, 0, size);
-
-        this.data = newData;
-    }
-
-    public int get(int index) {
+    @SuppressWarnings("unchecked")
+    public E get(int index) {
         checkIndex(index);
-        return data[index];
+        return (E) data[index];
     }
 
-    public void set(int index, int e) {
+    public void set(int index, E e) {
         checkIndex(index);
         data[index] = e;
     }
 
-    public boolean contains(int e) {
+    public boolean contains(E e) {
         for (int i = 0; i < size; i++) {
-            if (data[i] == e) {
+            if (data[i].equals(e)) {
                 return true;
             }
         }
@@ -99,9 +92,9 @@ public class Array {
         return false;
     }
 
-    public int indexOf(int e) {
+    public int indexOf(E e) {
         for (int i = 0; i < size; i++) {
-            if (data[i] == e) {
+            if (data[i].equals(e)) {
                 return i;
             }
         }
@@ -109,27 +102,37 @@ public class Array {
         return -1;
     }
 
-    public int removeFirst() {
+    public E removeFirst() {
         return remove(0);
     }
 
-    private int removeLast() {
+    public E removeLast() {
         return remove(size - 1);
     }
 
     // 只删除第一个
-    public void removeElement(int e) {
+    public void removeElement(E e) {
         int index = indexOf(e);
         if (index != -1) {
             remove(index);
         }
     }
 
-    public int remove(int index) {
+    @SuppressWarnings("unchecked")
+    public E remove(int index) {
         checkIndex(index);
-        int rem = data[index];
+        E rem = (E) data[index];
         System.arraycopy(data, index + 1, data, index, size - index);
         size--;
+
+        // 释放索引，帮助垃圾回收
+        data[size] = null;
+
+        // 缩容
+        if (size < (data.length >> 2)) {
+            grow(data.length >> 2);
+        }
+
         return rem;
     }
 
@@ -137,6 +140,17 @@ public class Array {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("index must >= 0 and index < " + size);
         }
+    }
+
+    private void grow() {
+        grow((size + 1) << 2);
+    }
+
+    private void grow(int capacity) {
+        Object[] newData = new Object[capacity];
+        System.arraycopy(data, 0, newData, 0, size);
+
+        this.data = newData;
     }
 
     @Override
@@ -148,7 +162,9 @@ public class Array {
             sb.append(data[i]);
             sb.append(", ");
         }
-        sb.append(data[size - 1]);
+        if (size > 0) {
+            sb.append(data[size - 1]);
+        }
         sb.append("}");
         return sb.toString();
     }

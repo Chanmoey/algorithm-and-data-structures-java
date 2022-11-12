@@ -20,6 +20,8 @@ public class LoopQueue<E> implements Queue<E> {
 
     /**
      * 本循环数组的实现，会浪费一个空间，所以要把开辟capacity+1的空间。
+     * TODO：但是直接使用size，可以判断Queue是空还是满，所以不需要浪费一个空间，以后改进。
+     * TODO：或者，如果要浪费一个空间，size = data.length - (front - tail)，这样也就不需要size这个变量了
      *
      * @param capacity 容量
      */

@@ -3,7 +3,7 @@ package com.moon.queue;
 /**
  * @author Chanmoey
  */
-public class LoopQueue<E> implements Queue<E> {
+public class LoopQueueJustSize<E> implements Queue<E>{
 
     private Object[] data;
 
@@ -16,26 +16,27 @@ public class LoopQueue<E> implements Queue<E> {
      * front指向队尾的下一个位置
      */
     private int tail;
+
     private int size;
 
     /**
-     * 本循环数组的实现，会浪费一个空间，所以要把开辟capacity+1的空间。
+     * 通过size判断队列空或者队列不空
      *
      * @param capacity 容量
      */
-    public LoopQueue(int capacity) {
-        this.data = new Object[capacity + 1];
+    public LoopQueueJustSize(int capacity) {
+        this.data = new Object[capacity];
         this.front = 0;
         this.tail = 0;
         this.size = 0;
     }
 
-    public LoopQueue() {
+    public LoopQueueJustSize() {
         this(1 << 4);
     }
 
     public int getCapacity() {
-        return data.length - 1;
+        return data.length;
     }
 
     @Override
@@ -45,12 +46,12 @@ public class LoopQueue<E> implements Queue<E> {
 
     @Override
     public boolean isEmpty() {
-        return front == tail;
+        return size == 0;
     }
 
     @Override
     public void enqueue(E e) {
-        if ((tail + 1) % data.length == front) {
+        if (getSize() == getCapacity()) {
             grow(getCapacity() << 1);
         }
 
@@ -60,9 +61,9 @@ public class LoopQueue<E> implements Queue<E> {
     }
 
     private void grow(int newCapacity) {
-        Object[] newData = new Object[newCapacity + 1];
-        for (int i = 0; i < size; i++) {
-            newData[i] = data[(i + front) % data.length];
+        Object[] newData = new Object[newCapacity];
+        for (int i = 0; i < getSize(); i++) {
+            newData[i] = data[(i + front) % getCapacity()];
         }
 
         data = newData;
@@ -78,6 +79,8 @@ public class LoopQueue<E> implements Queue<E> {
         }
 
         E ret = (E) data[front];
+
+        // 帮助垃圾回收
         data[front] = null;
         front = (front + 1) % data.length;
         size--;
@@ -101,9 +104,9 @@ public class LoopQueue<E> implements Queue<E> {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("Queue: size = %d, capacity = %d front {", size, getCapacity()));
-        for (int i = front; i != tail; i = (i + 1) % data.length) {
-            sb.append(data[i]);
-            if ((i + 1) % data.length != tail) {
+        for (int i = 0; i < getSize(); i ++) {
+            sb.append(data[(i + front) % getCapacity()]);
+            if (i != getSize() - 1) {
                 sb.append(", ");
             }
         }

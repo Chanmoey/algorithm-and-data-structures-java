@@ -50,8 +50,9 @@ public class ArrayStack<E> implements Stack<E> {
             sb.append(i).append(", ");
         }
         if (array.getSize() != 0) {
-            sb.append(array.getLast()).append("}").append(" top");
+            sb.append(array.getLast());
         }
+        sb.append("}").append(" top");
         return sb.toString();
     }
 

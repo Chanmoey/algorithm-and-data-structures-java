@@ -28,5 +28,11 @@ public class LinkedListDfsTest {
         linkedList.removeLast();
         System.out.println(linkedList);
 
+        linkedList.addFirst(2);
+        System.out.println(linkedList);
+
+        linkedList.removeElement(2);
+        System.out.println(linkedList);
+
     }
 }

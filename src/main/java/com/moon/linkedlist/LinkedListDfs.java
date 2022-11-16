@@ -135,6 +135,26 @@ public class LinkedListDfs<E> {
         return remove(size - 1);
     }
 
+    public void removeElement(E e) {
+        dummyHead.next = removeElement(dummyHead.next, e);
+    }
+
+    private Node removeElement(Node cur, E e) {
+        if (cur == null) {
+            return null;
+        }
+
+        // 在当前节点后的链表中删除e，并返回删除后的结果链表
+        Node res = removeElement(cur.next, e);
+
+        if (cur.e.equals(e)) {
+            return res;
+        } else {
+            cur.next = res;
+            return cur;
+        }
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

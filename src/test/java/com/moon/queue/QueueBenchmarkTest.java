@@ -1,5 +1,6 @@
 package com.moon.queue;
 
+import com.moon.util.TimeUtil;
 import org.junit.Test;
 
 import java.util.Random;
@@ -24,19 +25,23 @@ public class QueueBenchmarkTest {
 
         long endTime = System.nanoTime();
 
-        return (endTime - startTime) / 1000000000.0;
+        return TimeUtil.nanoSecond2Second(startTime, endTime);
     }
 
     @Test
     public void benchmark() {
-        int count = 100000;
+        int count = 1000000;
         ArrayQueue<Integer> arrayQueue = new ArrayQueue<>();
         double time1 = queueBenchmark(arrayQueue, count);
 
         LoopQueue<Integer> loopQueue = new LoopQueue<>();
         double time2 = queueBenchmark(loopQueue, count);
 
+        QueueBaseLinkedList<Integer> queueBaseLinkedList = new QueueBaseLinkedList<>();
+        double time3 = queueBenchmark(loopQueue, count);
+
         System.out.println("ArrayQueue: " + time1 + "S");
         System.out.println("LoopQueue: " + time2 + "S");
+        System.out.println("QueueBaseLinkedList: " + time3 + "S");
     }
 }

@@ -1,6 +1,7 @@
 package com.moon.copyarray;
 
 import com.moon.constant.Constant;
+import com.moon.util.TimeUtil;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -22,7 +23,7 @@ public class CopyArrayBenchmark {
         }
         long endTime = System.nanoTime();
 
-        return (endTime - startTime) / Constant.NANOSECOND2SECOND;
+        return TimeUtil.nanoSecond2Second(startTime, endTime);
     }
 
     public static double copyByJavaNative(int count) {
@@ -34,7 +35,7 @@ public class CopyArrayBenchmark {
         System.arraycopy(arr, 0, copyArr, 0, count);
         long endTime = System.nanoTime();
 
-        return (endTime - startTime) / Constant.NANOSECOND2SECOND;
+        return TimeUtil.nanoSecond2Second(startTime, endTime);
     }
 
     @Test

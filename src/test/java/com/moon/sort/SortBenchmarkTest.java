@@ -10,6 +10,9 @@ import java.util.Arrays;
  * @author Chanmoey
  */
 public class SortBenchmarkTest {
+    private static final String SELECTION = "com.moon.sort.selectionsort.SelectionSort";
+    private static final String INSERTION = "com.moon.sort.insertionsort.InsertionSort";
+    private static final String MERGE = "com.moon.sort.mergesort.MergeSort";
 
     @Test
     public void twoSortWithOrderArrayBenchmark() {
@@ -30,10 +33,10 @@ public class SortBenchmarkTest {
         for (int n : dataSize) {
             Integer[] arr = ArrayGenerator.generateRandomArray(n, n);
             Integer[] arr2 = Arrays.copyOf(arr, arr.length);
-            SortingHelper.sortTest("com.moon.sort.selectionsort.SelectionSort",
-                    "sort", Comparable[].class, arr);
-            SortingHelper.sortTest("com.moon.sort.insertionsort.InsertionSort",
-                    "sortBetter", Comparable[].class, arr2);
+            Integer[] arr3 = Arrays.copyOf(arr, arr.length);
+            SortingHelper.sortTest(SELECTION, "sort", Comparable[].class, arr);
+            SortingHelper.sortTest(INSERTION, "sortBetter", Comparable[].class, arr2);
+            SortingHelper.sortTest(MERGE, "sort", Comparable[].class, arr3);
         }
     }
 }

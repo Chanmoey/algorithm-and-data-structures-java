@@ -37,7 +37,7 @@ public class SortingHelper {
             }
 
             double time = (endTime - startTime) / 1000000000.0;
-            System.out.printf("%s, n = %d : %f s%n", clazzPath.substring(clazzPath.lastIndexOf('.') + 1), arr.length, time);
+            System.out.printf("%s, n = %d : %f s%n", clazzPath.substring(clazzPath.lastIndexOf('.') + 1) + "." + methodName, arr.length, time);
             System.out.println();
 
         } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {

@@ -43,4 +43,18 @@ public class InsertionSort {
             arr[j] = save;
         }
     }
+
+    /**
+     * 对[l, r]进行排序
+     */
+    public static <E extends Comparable<E>> void sort(E[] arr, int l, int r) {
+        for (int i = l; i <= r; i++) {
+            E save = arr[i];
+            int j = i;
+            for (; j > l && save.compareTo(arr[j - 1]) < 0; j--) {
+                arr[j] = arr[j - 1];
+            }
+            arr[j] = save;
+        }
+    }
 }

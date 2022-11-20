@@ -1,9 +1,13 @@
 package com.moon.util;
 
+import java.util.Random;
+
 /**
  * @author Chanmoey
  */
 public class ArrayUtil {
+
+    public static final Random RANDOM = new Random();
 
     private ArrayUtil(){}
 

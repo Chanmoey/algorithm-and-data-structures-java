@@ -188,6 +188,10 @@ public class MergeSort {
         }
     }
 
+    public static <E extends Comparable<E>> void sortBetter(E[] arr) {
+        sort3(arr);
+    }
+
     /**
      * 查看递归的过程
      */

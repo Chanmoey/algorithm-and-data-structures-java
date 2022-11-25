@@ -20,6 +20,26 @@ public class SortingHelper {
         return true;
     }
 
+    @SuppressWarnings("unchecked")
+    public static boolean isSort(Object[] arr) {
+        for (int i = 1; i < arr.length; i++) {
+            if (((Comparable<Object>)arr[i - 1]).compareTo(arr[i]) > 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static boolean isReverseSort(Object[] arr) {
+        for (int i = 1; i < arr.length; i++) {
+            if (((Comparable<Object>)arr[i - 1]).compareTo(arr[i]) < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static <E extends Comparable<E>> void sortTest(String clazzPath, String methodName, E[] arr) {
         sortTest(clazzPath, methodName, Comparable[].class, arr);
     }

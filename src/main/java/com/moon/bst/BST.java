@@ -1,6 +1,8 @@
 package com.moon.bst;
 
-import com.moon.queue.Deque;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.Queue;
 
 /**
  * @author Chanmoey
@@ -202,11 +204,15 @@ public class BST<E extends Comparable<E>> {
         System.out.println(node.e);
     }
 
+    /**
+     * 前序遍历非递归实现
+     */
     public void preOrderNR() {
         if (root == null) {
+            System.out.println("BST is empty!");
             return;
         }
-        Deque<Node> stack = new Deque<>();
+        Deque<Node> stack = new ArrayDeque<>();
         stack.addLast(root);
 
         while (!stack.isEmpty()) {
@@ -220,6 +226,185 @@ public class BST<E extends Comparable<E>> {
                 stack.addLast(cur.left);
             }
         }
+    }
+
+    /**
+     * 后序遍历非递归实习
+     */
+    public void inOrderNR() {
+        if (root == null) {
+            System.out.println("BST is empty!");
+            return;
+        }
+
+        Deque<Node> stack = new ArrayDeque<>();
+        Node cur = root;
+        while (cur != null || !stack.isEmpty()) {
+            while (cur != null) {
+                // 一直将左孩子加入栈中，知道再无左孩子
+                stack.addLast(cur);
+                cur = cur.left;
+            }
+            // 现在就是第二次访问了，也就是中序遍历
+            cur = stack.removeLast();
+            System.out.println(cur.e);
+
+            // 中序之后，就该访问右孩子了
+            cur = cur.right;
+        }
+    }
+
+    /**
+     * 后序遍历非递归实现
+     */
+    public void postOrderNR() {
+        if (root == null) {
+            System.out.println("BST is empty!");
+            return;
+        }
+        Deque<Node> stack = new ArrayDeque<>();
+        Node cur = root;
+        Node temp;
+        while (cur != null || !stack.isEmpty()) {
+            if (cur != null) {
+                // 当前节点不是null，先入栈
+                stack.addLast(cur);
+                // 访问其左孩子
+                cur = cur.left;
+            } else {
+                // 当前节点为null，看一下栈顶（只是peek，没有pop！！！）
+                temp = stack.getLast();
+                if (temp.right != null) {
+                    // temp有右孩子，先访问右孩
+                    cur = temp.right;
+                } else {
+                    // temp没有右孩，上面已经知道左孩为null，此时右孩也null，该访问temp了
+                    stack.removeLast();
+
+                    // 看要访问的temp是不是栈顶的right，如果是，那么访问完temp，就要访问栈顶了
+                    while (!stack.isEmpty() && stack.getLast().right == temp) {
+                        System.out.println(temp.e);
+                        temp = stack.removeLast();
+                    }
+                    System.out.println(temp.e);
+                }
+            }
+        }
+    }
+
+    public void levelOrder() {
+        if (root == null) {
+            System.out.println("BST is empty!");
+            return;
+        }
+        Queue<Node> queue = new ArrayDeque<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            Node cur = queue.remove();
+            System.out.println(cur.e);
+            if (cur.left != null) {
+                queue.add(cur.left);
+            }
+            if (cur.right != null) {
+                queue.add(cur.right);
+            }
+        }
+    }
+
+    public E minimum() {
+        if (size == 0) {
+            throw new IllegalArgumentException("BST is empty!");
+        }
+
+        return minimum(root).e;
+    }
+
+    /**
+     * 返回以Node为根的二叉树的最小值
+     */
+    private Node minimum(Node node) {
+        if (node.left == null) {
+            return node;
+        }
+        return minimum(node.left);
+    }
+
+    public E minimumNR() {
+        if (size == 0) {
+            throw new IllegalArgumentException("BST is empty!");
+        }
+        Node cur = root;
+        while (cur.left != null) {
+            cur = cur.left;
+        }
+        return cur.e;
+    }
+
+    public E maximum() {
+        if (size == 0) {
+            throw new IllegalArgumentException("BST is empty!");
+        }
+        return maximum(root).e;
+    }
+
+    private Node maximum(Node node) {
+        if (node.right == null) {
+            return node;
+        }
+        return maximum(node.right);
+    }
+
+    public E maximumNR() {
+        if (size == 0) {
+            throw new IllegalArgumentException("BST is empty!");
+        }
+        Node cur = root;
+        while (cur.right != null) {
+            cur = cur.right;
+        }
+        return cur.e;
+    }
+
+    public E removeMin() {
+        E ret = minimum();
+        root = removeMIn(root);
+        return ret;
+    }
+
+    /**
+     * 删除以node为根的二叉树的最小节点，并返回删除后的二叉树的根
+     */
+    private Node removeMIn(Node node) {
+        // 此时，node应该被删除
+        if (node.left == null) {
+            Node rightNode = node.right;
+            node.right = null;
+            size--;
+            return rightNode;
+        }
+        node.left = removeMIn(node.left);
+        return node;
+    }
+
+    public E removeMax() {
+        E ret = maximum();
+        root = removeMax(root);
+        return ret;
+    }
+
+    /**
+     * 删除以node为根的二叉树的最大节点，并返回删除后的二叉树的根
+     */
+    private Node removeMax(Node node) {
+        // 此时，node应该被删除
+        if (node.right == null) {
+            Node leftNode = node.left;
+            node.left = null;
+            size--;
+            return leftNode;
+        }
+        node.right = removeMax(node.right);
+        return node;
     }
 
     @Override
@@ -241,8 +426,6 @@ public class BST<E extends Comparable<E>> {
     }
 
     private String generateDepthString(int depth) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("--".repeat(Math.max(0, depth)));
-        return sb.toString();
+        return "--".repeat(Math.max(0, depth));
     }
 }

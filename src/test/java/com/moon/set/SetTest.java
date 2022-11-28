@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class SetTest {
 
     @Test
-    public void test() throws FileNotFoundException {
+    public void bstSetTest() throws FileNotFoundException {
         System.out.println("pride-and-prejudice");
 
         ArrayList<String> ppWords = new ArrayList<>();
@@ -39,6 +39,36 @@ public class SetTest {
         tcWords.forEach(bstSet1::add);
 
         System.out.println("Total different words: " + bstSet1.getSize());
+
+    }
+
+    @Test
+    public void linkedListSet() throws FileNotFoundException {
+        System.out.println("pride-and-prejudice");
+
+        ArrayList<String> ppWords = new ArrayList<>();
+        FileUtil.readFile("src/main/java/com/moon/util/mock/pride-and-prejudice.txt", ppWords);
+
+        System.out.println("Total words: " + ppWords.size());
+
+        Set<String> set = new LinkedListSet<>();
+        ppWords.forEach(set::add);
+
+        System.out.println("Total different words: " + set.getSize());
+
+        System.out.println("----------------------------------------------------");
+
+        System.out.println("a-tale-of-two-cities");
+
+        ArrayList<String> tcWords = new ArrayList<>();
+        FileUtil.readFile("src/main/java/com/moon/util/mock/a-tale-of-two-cities.txt", tcWords);
+
+        System.out.println("Total words: " + tcWords.size());
+
+        Set<String> set1 = new LinkedListSet<>();
+        tcWords.forEach(set1::add);
+
+        System.out.println("Total different words: " + set1.getSize());
 
     }
 }

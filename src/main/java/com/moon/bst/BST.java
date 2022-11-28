@@ -407,6 +407,118 @@ public class BST<E extends Comparable<E>> {
         return node;
     }
 
+    /**
+     * 删除任意节点
+     */
+    public void remove(E e) {
+        root = remove(root, e);
+    }
+
+    /**
+     * 在以node为根的BST中删除e，递归算法
+     * 返回删除后，新树的根
+     */
+    private Node remove(Node node, E e) {
+        // 及时return，减少if的层级
+        if (node == null) {
+            return null;
+        }
+        if (e.compareTo(node.e) < 0) {
+            node.left = remove(node.left, e);
+            return node;
+        }
+        if (e.compareTo(node.e) > 0) {
+            node.right = remove(node.right, e);
+            return node;
+        }
+
+        // 此时，e.compareTo(node.e) == 0
+        if (node.right == null && node.left == null) {
+            return null;
+        }
+
+        // 把右孩子当成根
+        if (node.left == null) {
+            Node rightNode = node.right;
+            node.right = null;
+            size--;
+            return rightNode;
+        }
+
+        if (node.right == null) {
+            Node leftNode = node.left;
+            node.left = null;
+            size--;
+            return leftNode;
+        }
+
+        // 左右孩子都不是null，将右孩子树的最小值当成根
+        // 这一部分不用size--，removeMIn里--了
+        Node rightMin = minimum(node.right);
+        rightMin.right = removeMIn(node.right);
+        rightMin.left = node.left;
+        node.left = node.right = null;
+        return rightMin;
+    }
+
+    /**
+     * 小于或等于e中最大的一个
+     */
+    public E floor(E e) {
+        return floor(root, e);
+    }
+
+    private E floor(Node node, E e) {
+        if (node == null) {
+            return null;
+        }
+
+        if (e.compareTo(node.e) == 0) {
+            return node.e;
+        }
+
+        if (e.compareTo(node.e) < 0) {
+            // node比e大，往左边找
+            return floor(node.left, e);
+        }
+
+        // 此时e比node大，去node的右边，看能不能找到比e小的
+        E temp = floor(node.right, e);
+        if (temp != null) {
+            return null;
+        }
+        return node.e;
+    }
+
+    /**
+     * 大于或等于e中，最小的那个
+     */
+    public E ceiling(E e) {
+        return ceiling(root, e);
+    }
+
+    private E ceiling(Node node, E e) {
+        if (node == null) {
+            return null;
+        }
+
+        if (e.compareTo(node.e) == 0) {
+            return node.e;
+        }
+
+        if (e.compareTo(node.e) > 0) {
+            return ceiling(node.right, e);
+        }
+
+        // 此时node比e大，去node的左边看看有没有比node小，比e大的
+        E temp = ceiling(node.left, e);
+        if (temp != null) {
+            return temp;
+        }
+
+        return node.e;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

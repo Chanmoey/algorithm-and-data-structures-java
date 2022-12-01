@@ -26,4 +26,21 @@ public class HeapSortTest {
         SortingHelper.sortTest("com.moon.sort.quicksort.QuickSort", "sort3ways", arr2);
         SortingHelper.sortTest("com.moon.sort.mergesort.MergeSort", "sortBetter", arr3);
     }
+
+    @Test
+    public void test1() {
+        int n = 1000000;
+
+        Integer[] arr = ArrayGenerator.generateRandomArray(n, n);
+        Integer[] arr1 = Arrays.copyOf(arr, arr.length);
+        Integer[] arr2 = Arrays.copyOf(arr, arr.length);
+        Integer[] arr3 = Arrays.copyOf(arr, arr.length);
+        Integer[] arr4 = Arrays.copyOf(arr, arr.length);
+
+        SortingHelper.sortTest("com.moon.sort.heapsort.HeapSort", "sort", arr);
+        SortingHelper.sortTest("com.moon.sort.heapsort.HeapSort", "sort1", arr4);
+        SortingHelper.sortTest("com.moon.sort.quicksort.QuickSort", "sort2ways", arr1);
+        SortingHelper.sortTest("com.moon.sort.quicksort.QuickSort", "sort3ways", arr2);
+        SortingHelper.sortTest("com.moon.sort.mergesort.MergeSort", "sortBetter", arr3);
+    }
 }

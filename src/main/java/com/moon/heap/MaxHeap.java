@@ -12,7 +12,7 @@ import com.moon.array.Array;
  */
 public class MaxHeap<E extends Comparable<E>> {
 
-    private final Array<E> data;
+    private Array<E> data;
 
     public MaxHeap(int capacity) {
         data = new Array<>(capacity);
@@ -20,6 +20,10 @@ public class MaxHeap<E extends Comparable<E>> {
 
     public MaxHeap() {
         data = new Array<>();
+    }
+
+    public MaxHeap(E[] arr) {
+        heapify(arr);
     }
 
     public int size() {
@@ -126,7 +130,7 @@ public class MaxHeap<E extends Comparable<E>> {
             // j从左孩子开始看
             int j = leftChild(k);
             // 有右孩子，且右孩子比左孩子大，那么交换对象就只可能是右孩子
-            if (j + 1 < data.getSize() && data.get(j+1).compareTo(data.get(j)) > 0) {
+            if (j + 1 < data.getSize() && data.get(j + 1).compareTo(data.get(j)) > 0) {
                 // j现在是右孩子
                 j++;
             }
@@ -142,5 +146,26 @@ public class MaxHeap<E extends Comparable<E>> {
 
     }
 
+    /**
+     * 取出最大元素，并添加一个新元素 == 新元素覆盖最大元素并执行siftDown
+     */
+    public E replace(E e) {
+        E ret = peek();
+        data.set(0, e);
+        siftDown(0);
+        return ret;
+    }
+
+    /**
+     * 把一个数组改造成堆，O(n)
+     * 1. 找到最后一个非叶子节点(最后一个叶子节点的parent)
+     * 2. 依次将所有非叶子节点进行siftDown
+     */
+    public void heapify(E[] arr) {
+        data = new Array<>(arr);
+        for (int i = parent(arr.length - 1); i >= 0; i--) {
+            siftDown(i);
+        }
+    }
 
 }

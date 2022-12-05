@@ -10,58 +10,20 @@ import com.moon.array.Array;
  * @author Chanmoey
  * @date 2022年12月01日
  */
-public class MaxHeap<E extends Comparable<E>> {
-
-    private Array<E> data;
+public class MaxHeap<E extends Comparable<E>> extends Heap<E>{
 
     public MaxHeap(int capacity) {
-        data = new Array<>(capacity);
+        super(capacity);
     }
 
     public MaxHeap() {
-        data = new Array<>();
+        super();
     }
 
     public MaxHeap(E[] arr) {
         heapify(arr);
     }
 
-    public int size() {
-        return data.getSize();
-    }
-
-    public boolean isEmpty() {
-        return data.isEmpty();
-    }
-
-    /**
-     * 返回index所在节点的父节点的索引
-     */
-    private int parent(int index) {
-        if (index == 0) {
-            throw new IllegalArgumentException("index-0 doesn't have parent");
-        }
-        return (index - 1) >>> 1;
-    }
-
-    /**
-     * 返回index节点的左孩子的索引
-     */
-    private int leftChild(int index) {
-        return (index << 1) + 1;
-    }
-
-    /**
-     * 返回index节点的右孩子的索引
-     */
-    private int rightChild(int index) {
-        return (index << 1) + 2;
-    }
-
-    /**
-     * 1. 往树（数组）的末尾添加一个元素
-     * 2. 执行siftUp操作
-     */
     public void add(E e) {
         data.addLast(e);
         siftUp(data.getSize() - 1);
@@ -69,7 +31,7 @@ public class MaxHeap<E extends Comparable<E>> {
 
     /**
      * 对索引为k的元素进行siftUp操作
-     * 1. 依次比较其父节点，如果比父节点大，则交换，递归下去。
+     * 1. 依次比较其父节点，如果比父节点大(或等)，则交换，递归下去。
      */
     private void siftUp(int k) {
 
@@ -93,17 +55,6 @@ public class MaxHeap<E extends Comparable<E>> {
 //        }
 //        // 最后记得把temp的值写上
 //        data.set(k, temp);
-    }
-
-    /**
-     * 查看堆顶
-     */
-    public E peek() {
-        if (isEmpty()) {
-            throw new IllegalArgumentException("MaxHeap is empty!");
-        }
-
-        return data.get(0);
     }
 
     /**

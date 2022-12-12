@@ -85,4 +85,24 @@ public class TrieTest {
         System.out.println("包含abc吗 " + trie.contains("abc"));
         System.out.println("包含前缀ab吗 " + trie.isPrefix("ab"));
     }
+
+    @Test
+    public void remove2Test() {
+        Trie trie = new Trie();
+        trie.add("ab");
+        trie.add("abc");
+        trie.add("abcd");
+        System.out.println("包含ab吗 " + trie.contains("ab"));
+        System.out.println("包含abc吗 " + trie.contains("abc"));
+        System.out.println("包含abcd吗 " + trie.contains("abcd"));
+        System.out.println("包含前缀ab吗 " + trie.isPrefix("ab"));
+
+        System.out.println("删除abc");
+        trie.remove("abc");
+
+        System.out.println("包含ab吗 " + trie.contains("ab"));
+        System.out.println("包含abc吗 " + trie.contains("abc"));
+        System.out.println("包含abcd吗 " + trie.contains("abcd"));
+        System.out.println("包含前缀ab吗 " + trie.isPrefix("ab"));
+    }
 }

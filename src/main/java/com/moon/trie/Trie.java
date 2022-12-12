@@ -110,7 +110,7 @@ public class Trie {
                 node.isWord = false;
                 // 意味着word在这个路径下，并不是终点，所以，回溯时，也不需要继续删除了
                 // word单词在这个路径下已经是末尾终点了，回溯时继续删除。
-                this.keepRemove = node.next.size() == 0;
+                this.keepRemove = node.next.isEmpty();
 
                 return true;
             }

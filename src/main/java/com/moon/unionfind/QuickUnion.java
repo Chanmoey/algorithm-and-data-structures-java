@@ -10,7 +10,7 @@ package com.moon.unionfind;
  */
 public class QuickUnion implements UF {
 
-    private int[] parent;
+    private final int[] parent;
 
     public QuickUnion(int size) {
         parent = new int[size];

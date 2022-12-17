@@ -1,4 +1,4 @@
-package unionfind;
+package com.moon.unionfind;
 
 import com.moon.unionfind.*;
 import com.moon.util.TimeUtil;

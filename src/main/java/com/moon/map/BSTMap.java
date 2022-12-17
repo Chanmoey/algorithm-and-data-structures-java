@@ -80,9 +80,10 @@ public class BSTMap<K extends Comparable<K>, V> implements Map<K, V> {
     public void set(K key, V newValue) {
         Node node = getNode(root, key);
         if (node == null) {
-            throw new IllegalArgumentException(key + " doesn't exist");
+            add(key, newValue);
+        }else {
+            node.value = newValue;
         }
-        node.value = newValue;
     }
 
     @Override

@@ -36,7 +36,6 @@ public class AVLTreeTest {
         System.out.println("Total different words: " + avlTree.getSize());
         System.out.println(avlTree.isBalance());
         System.out.println(avlTree.isBST());
-        System.out.println("----------------------------------------------------");
     }
 
     @Test
@@ -126,5 +125,35 @@ public class AVLTreeTest {
         endTime = System.nanoTime();
 
         System.out.println("BST time: " + TimeUtil.nanoSecond2Second(startTime, endTime) + "s");
+    }
+
+    @Test
+    public void testRemove() throws FileNotFoundException {
+        System.out.println("pride-and-prejudice");
+
+        ArrayList<String> ppWords = new ArrayList<>();
+        FileUtil.readFile("src/main/java/com/moon/util/mock/pride-and-prejudice.txt", ppWords);
+
+        System.out.println("Total words: " + ppWords.size());
+
+        AVLTree<String, Integer> avlTree = new AVLTree<>();
+        ppWords.forEach(word -> {
+            if (avlTree.contains(word)) {
+                avlTree.set(word, avlTree.get(word) + 1);
+            } else {
+                avlTree.set(word, 1);
+            }
+        });
+
+        System.out.println("Total different words: " + avlTree.getSize());
+        System.out.println(avlTree.isBalance());
+        System.out.println(avlTree.isBST());
+
+        for (String word: ppWords) {
+            avlTree.remove(word);
+            if (!avlTree.isBST() || !avlTree.isBalance()) {
+                throw new RuntimeException("不平衡啦！");
+            }
+        }
     }
 }

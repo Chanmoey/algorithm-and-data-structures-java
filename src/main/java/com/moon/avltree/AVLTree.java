@@ -100,15 +100,14 @@ public class AVLTree<K extends Comparable<K>, V> {
     }
 
     /**
-     *
      * 对节点y进行向右旋转操作，返回旋转后的新的根节点x
-     *         y                                 x
-     *        / \                               / \
-     *       x   T4      向右旋转 (y)           z    y
-     *      / \        -------------->       / \   / \
-     *     z   T3                           T1 T2 T3  T4
-     *    / \
-     *   T1  T2
+     * y                                 x
+     * / \                               / \
+     * x   T4      向右旋转 (y)           z    y
+     * / \        -------------->       / \   / \
+     * z   T3                           T1 T2 T3  T4
+     * / \
+     * T1  T2
      */
     private Node rightRotate(Node y) {
         Node x = y.left;
@@ -126,13 +125,13 @@ public class AVLTree<K extends Comparable<K>, V> {
 
     /**
      * 对节点y进行向左旋转操作，返回旋转后的新的根节点x
-     *   y                                 x
-     *  / \                               / \
+     * y                                 x
+     * / \                               / \
      * T1  x      向左旋转 (y)            y    z
-     *    / \     -------------->      / \   / \
-     *   T2  z                        T1 T2 T3  T4
-     *      / \
-     *     T1 T2
+     * / \     -------------->      / \   / \
+     * T2  z                        T1 T2 T3  T4
+     * / \
+     * T1 T2
      */
     private Node leftRotate(Node y) {
         Node x = y.right;
@@ -240,7 +239,7 @@ public class AVLTree<K extends Comparable<K>, V> {
             root = remove(root, key);
             return node.value;
         }
-        throw new IllegalArgumentException(key + " doesn't exist");
+        return null;
     }
 
     private Node remove(Node node, K key) {
@@ -248,42 +247,76 @@ public class AVLTree<K extends Comparable<K>, V> {
         if (node == null) {
             return null;
         }
+
+        Node retNode;
         if (key.compareTo(node.key) < 0) {
             node.left = remove(node.left, key);
-            return node;
-        }
-        if (key.compareTo(node.key) > 0) {
+            retNode = node;
+        } else if (key.compareTo(node.key) > 0) {
             node.right = remove(node.right, key);
-            return node;
+            retNode = node;
+        } else {
+            // 此时，e.compareTo(node.e) == 0
+
+            // 把右孩子当成根
+            if (node.left == null) {
+                Node rightNode = node.right;
+                node.right = null;
+                size--;
+                retNode = rightNode;
+            } else if (node.right == null) {
+                Node leftNode = node.left;
+                node.left = null;
+                size--;
+                retNode = leftNode;
+            } else {
+                // 左右孩子都不是null，将右孩子树的最小值当成根
+                // 这一部分不用size--，removeMIn里--了
+                Node rightMin = minimum(node.right);
+
+                // removeMin没有维护平衡，不能再用了
+
+                rightMin.right = remove(node.right, rightMin.key);
+                rightMin.left = node.left;
+                node.left = node.right = null;
+                retNode = rightMin;
+            }
         }
 
-        // 此时，e.compareTo(node.e) == 0
-        if (node.right == null && node.left == null) {
+        if (retNode == null) {
             return null;
         }
 
-        // 把右孩子当成根
-        if (node.left == null) {
-            Node rightNode = node.right;
-            node.right = null;
-            size--;
-            return rightNode;
+        // 更新node的高度
+        retNode.height = 1 + Math.max(getHeight(retNode.left), getHeight(retNode.right));
+
+        // 计算平衡因子
+        int balanceFactor = getBalanceFactor(retNode);
+
+        // 平衡维护
+        // 左孩高于右孩 LL
+        if (balanceFactor > 1 && getBalanceFactor(retNode.left) >= 0) {
+            // 右旋转
+            return rightRotate(retNode);
         }
 
-        if (node.right == null) {
-            Node leftNode = node.left;
-            node.left = null;
-            size--;
-            return leftNode;
+        // 右孩高于左孩 RR
+        if (balanceFactor < -1 && getBalanceFactor(retNode.right) <= 0) {
+            return leftRotate(retNode);
         }
 
-        // 左右孩子都不是null，将右孩子树的最小值当成根
-        // 这一部分不用size--，removeMIn里--了
-        Node rightMin = minimum(node.right);
-        rightMin.right = removeMIn(node.right);
-        rightMin.left = node.left;
-        node.left = node.right = null;
-        return rightMin;
+        // LR：新节点插入到不平衡阶段的左孩子的右孩子，导致了不平衡
+        if (balanceFactor > 1 && getBalanceFactor(retNode.left) < 0) {
+            retNode.left = leftRotate(retNode.left);
+            return rightRotate(retNode);
+        }
+
+        if (balanceFactor < -1 && getBalanceFactor(retNode.right) > 0) {
+            retNode.right = rightRotate(retNode.right);
+            return leftRotate(retNode);
+        }
+
+        return retNode;
     }
 
     private Node minimum(Node node) {
@@ -293,15 +326,4 @@ public class AVLTree<K extends Comparable<K>, V> {
         return minimum(node.left);
     }
 
-    private Node removeMIn(Node node) {
-        // 此时，node应该被删除
-        if (node.left == null) {
-            Node rightNode = node.right;
-            node.right = null;
-            size--;
-            return rightNode;
-        }
-        node.left = removeMIn(node.left);
-        return node;
-    }
 }

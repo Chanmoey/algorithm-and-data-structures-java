@@ -90,6 +90,7 @@ public class RBTree<K extends Comparable<K>, V> implements Map<K, V> {
     private Node add(Node node, K key, V value) {
         if (node == null) {
             size++;
+            // 默认插入红色节点
             return new Node(key, value);
         }
 
@@ -100,6 +101,17 @@ public class RBTree<K extends Comparable<K>, V> implements Map<K, V> {
         } else {
             // key.compareTo(node.key) == 0
             node.value = value;
+        }
+
+
+        if (isRed(node.right) && !isRed(node.left)) {
+            node = leftRote(node);
+        }
+        if (isRed(node.left) && isRed(node.left.left)) {
+            node = rightRotate(node);
+        }
+        if (isRed(node.left) && isRed(node.right)) {
+            flipColors(node);
         }
 
         return node;

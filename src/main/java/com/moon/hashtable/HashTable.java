@@ -9,29 +9,30 @@ import java.util.TreeMap;
 public class HashTable<K, V> {
 
     // 动态容量参数
-    public static final int upperTol = 10;
-    public static final int lowerTol = 2;
-    public static final int initCapacity = 7;
+    public static final int UPPER_TOL = 10;
+    public static final int LOWER_TOL = 2;
 
+    // 哈希容量
+    private final int[] capacity = {53, 97, 193, 389, 769, 1543, 3079, 6151, 12289, 24593, 49157, 98317, 196613, 393241,
+            786433, 1572869, 3145739, 6291469, 12582917, 25165843, 50331653, 100663319, 201326611, 402653189, 805306457,
+    };
+    private int capacityIndex = 0;
 
-    private TreeMap<K, V>[] hashTable;
+    private TreeMap<K, V>[] table;
 
     private int m;
 
     private int size;
 
+    @SuppressWarnings("unchecked")
     public HashTable(int m) {
-        this.m = m;
+        this.m = capacity[capacityIndex];
         this.size = 0;
-        hashTable = new TreeMap[m];
+        table = new TreeMap[m];
 
         for (int i = 0; i < m; i++) {
-            hashTable[i] = new TreeMap<>();
+            table[i] = new TreeMap<>();
         }
-    }
-
-    public HashTable() {
-        this(initCapacity);
     }
 
     private int hash(K key) {
@@ -43,7 +44,7 @@ public class HashTable<K, V> {
     }
 
     public void add(K key, V value) {
-        TreeMap<K, V> map = hashTable[hash(key)];
+        TreeMap<K, V> map = table[hash(key)];
         if (map.containsKey(key)) {
             // 已包含，更改值
             map.put(key, value);
@@ -53,28 +54,30 @@ public class HashTable<K, V> {
             size++;
         }
 
-        if (size >= upperTol * m) {
-            resize(m << 1);
+        if (size >= UPPER_TOL * m && capacityIndex + 1 < capacity.length) {
+            capacityIndex++;
+            resize(capacity[capacityIndex]);
         }
     }
 
     public V remove(K key) {
-        TreeMap<K, V> map = hashTable[hash(key)];
+        TreeMap<K, V> map = table[hash(key)];
         V rel = null;
         if (map.containsKey(key)) {
             rel = map.remove(key);
             size--;
         }
 
-        if (size < lowerTol * m && (m >> 1) >= initCapacity) {
-            resize(m >> 1);
+        if (size < LOWER_TOL * m && capacityIndex - 1 >= 0) {
+            capacityIndex--;
+            resize(capacity[capacityIndex]);
         }
 
         return rel;
     }
 
     public void set(K key, V value) {
-        TreeMap<K, V> map = hashTable[hash(key)];
+        TreeMap<K, V> map = table[hash(key)];
         if (!map.containsKey(key)) {
             throw new IllegalArgumentException("No key in hash table!");
         }
@@ -82,11 +85,11 @@ public class HashTable<K, V> {
     }
 
     public boolean contains(K key) {
-        return hashTable[hash(key)].containsKey(key);
+        return table[hash(key)].containsKey(key);
     }
 
     public V get(K key) {
-        return hashTable[hash(key)].get(key);
+        return table[hash(key)].get(key);
     }
 
     @SuppressWarnings("unchecked")
@@ -100,10 +103,10 @@ public class HashTable<K, V> {
         this.m = newM;
 
         for (int i = 0; i < oldM; i++) {
-            TreeMap<K, V> map = hashTable[i];
+            TreeMap<K, V> map = table[i];
             map.forEach((key, value) -> newHashTable[hash(key)].put(key, value));
         }
 
-        this.hashTable = newHashTable;
+        this.table = newHashTable;
     }
 }

@@ -3,6 +3,8 @@ package com.moon.hashtable;
 import java.util.TreeMap;
 
 /**
+ * 哈希表得到了性能，但是丢失了数据的顺序性。
+ *
  * @author Chanmoey
  * @date 2022年12月26日
  */

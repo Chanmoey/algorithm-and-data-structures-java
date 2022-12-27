@@ -27,7 +27,7 @@ public class HashTable<K, V> {
     private int size;
 
     @SuppressWarnings("unchecked")
-    public HashTable(int m) {
+    public HashTable() {
         this.m = capacity[capacityIndex];
         this.size = 0;
         table = new TreeMap[m];

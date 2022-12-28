@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -14,7 +15,7 @@ import java.util.Scanner;
  */
 public class FileUtil {
 
-    public static void readFile(String fileName, ArrayList<String> words) throws FileNotFoundException {
+    public static void readFile(String fileName, List<String> words) throws FileNotFoundException {
         if (fileName == null || fileName.length() == 0 || words == null) {
             throw new IllegalArgumentException("file name is null or word list is null!");
         }
@@ -49,5 +50,13 @@ public class FileUtil {
             }
         }
         return s.length();
+    }
+
+    public static String txt2String(String filePath) throws FileNotFoundException {
+        List<String> list = new ArrayList<>();
+        readFile(filePath, list);
+        StringBuilder sb = new StringBuilder();
+        list.stream().map(word -> word + " ").forEach(sb::append);
+        return sb.toString();
     }
 }

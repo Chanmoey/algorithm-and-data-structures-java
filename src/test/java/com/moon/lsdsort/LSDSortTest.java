@@ -13,7 +13,8 @@ public class LSDSortTest {
     public void test() {
         String[] arr = {"BCA", "CAB", "ACB", "BAC", "ABC", "CBA"};
         LSDSort.sort(arr, 3);
-        for(String s: arr)
+        for(String s: arr) {
             System.out.println(s);
+        }
     }
 }

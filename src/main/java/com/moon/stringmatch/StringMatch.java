@@ -44,6 +44,63 @@ public class StringMatch {
         return -1;
     }
 
+    /**
+     * 滚动哈希
+     */
+    public static int rabinKarp(String s, String t) {
+        checkNull(s, t);
+        if (s.length() < t.length()) {
+            return -1;
+        }
+
+        if (t.length() == 0) {
+            throw new IllegalArgumentException("empty string can not match any other string!");
+        }
+
+        long mod = (long) 1e9 + 7;
+        final long b = 256;
+
+        long tHash = 0;
+        for (int i = 0; i < t.length(); i++) {
+            tHash = (tHash * b + t.charAt(i)) % mod;
+        }
+
+        long hash = 0;
+        long p = 1;
+        for (int i = 0; i < t.length() - 1; i++) {
+            p = p * b % mod;
+        }
+
+        for (int i = 0; i < t.length() - 1; i++) {
+            hash = (hash * b + s.charAt(i)) % mod;
+        }
+
+        for (int i = t.length() - 1; i < s.length(); i++) {
+            hash = (hash * b + s.charAt(i)) % mod;
+
+            if (hash == tHash && isTrueEqual(s, i - t.length() + 1, t)) {
+                return i - t.length() + 1;
+            }
+
+            hash = (hash - s.charAt(i - t.length() + 1) * p % mod + mod) % mod;
+        }
+
+        return -1;
+    }
+
+    /**
+     * s[l, t.length()]字串是否等于t
+     */
+    private static boolean isTrueEqual(String s, int l, String t) {
+        for (int i = 0; i < t.length(); i++) {
+            if (t.charAt(i) != s.charAt(i + l)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     private static void checkNull(String... args) {
         for (String s : args) {
             if (s == null) {

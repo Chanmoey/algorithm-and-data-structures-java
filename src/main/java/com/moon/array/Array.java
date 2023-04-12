@@ -154,7 +154,7 @@ public class Array<E> {
         return rem;
     }
 
-    private void checkIndex(int index) {
+    protected void checkIndex(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("index must >= 0 and index < " + size);
         }

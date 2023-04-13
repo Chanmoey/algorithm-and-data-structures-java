@@ -12,7 +12,9 @@ public class FastArray<E> extends Array<E> {
      * @param e e
      */
     public void addWithSwitch(int idx, E e) {
-        checkIndex(idx);
+        if (idx < 0 || idx > getSize()) {
+            throw new IndexOutOfBoundsException("index must >= 0 and index <= " + getSize());
+        }
         if (idx == getSize()) {
             addLast(e);
         } else {

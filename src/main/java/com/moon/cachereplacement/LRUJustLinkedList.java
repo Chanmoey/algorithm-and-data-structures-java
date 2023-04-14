@@ -43,7 +43,7 @@ public class LRUJustLinkedList<K extends Comparable<K>, V> {
         }
     }
 
-    private Node<K, V> dummyHeader = new Node<>(null, null);
+    private final Node<K, V> dummyHeader = new Node<>(null, null);
 
     private final int cacheSize;
 
@@ -63,7 +63,7 @@ public class LRUJustLinkedList<K extends Comparable<K>, V> {
                 cur.setValue(value);
                 prev.next = cur.next;
                 cur.next = dummyHeader.next;
-                dummyHeader = cur;
+                dummyHeader.next = cur;
                 return;
             }
             prev = cur;

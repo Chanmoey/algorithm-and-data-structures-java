@@ -6,7 +6,7 @@ package com.moon.linkedlist;
  */
 public class DoubleLinkedList<E> {
 
-    private class Node {
+    public class Node {
         private E value;
 
         private Node prev;
@@ -100,15 +100,20 @@ public class DoubleLinkedList<E> {
         node.value = e;
     }
 
-    public boolean contains(E e) {
+    public Node getNode(E e) {
         Node cur = dummyHead.next;
         while (cur != null) {
             if (cur.value.equals(e)) {
-                return true;
+                return cur;
             }
             cur = cur.next;
         }
-        return false;
+
+        return null;
+    }
+
+    public boolean contains(E e) {
+        return getNode(e) != null;
     }
 
     public void remove(int idx) {
@@ -137,11 +142,13 @@ public class DoubleLinkedList<E> {
             }
             cur = cur.next;
         }
-
+        if (cur == null) {
+            return;
+        }
         remove(cur);
     }
 
-    private void remove(Node node) {
+    public void remove(Node node) {
         size--;
         if (node == tail) {
             tail = node.prev;

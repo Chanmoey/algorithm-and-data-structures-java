@@ -1,6 +1,6 @@
 package com.moon;
 
-import com.moon.util.mock.Student1;
+import com.moon.classicalalgorithm.util.mock.Student1;
 
 public class Main {
     public static void main(String[] args) {

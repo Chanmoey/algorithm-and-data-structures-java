@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.moon</groupId>
-    <artifactId>play-algorithms-and-data-structures</artifactId>
+    <artifactId>classicalalgorithm</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>

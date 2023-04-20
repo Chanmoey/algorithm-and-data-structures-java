@@ -18,3 +18,19 @@
 
 ## LinkedList 链表
 
+- [DoubleLinkedList](https://github.com/Chanmoey/algorithm-and-data-structures-java/blob/main/src/main/java/com/moon/classicalalgorithm/linkedlist/DoubleLinkedList.java)
+
+双向链表
+
+- [LinkedList](https://github.com/Chanmoey/algorithm-and-data-structures-java/blob/main/src/main/java/com/moon/classicalalgorithm/linkedlist/LinkedList.java)
+
+单向链表
+
+- [LinkedListDfs](https://github.com/Chanmoey/algorithm-and-data-structures-java/blob/main/src/main/java/com/moon/classicalalgorithm/linkedlist/LinkedListDfs.java)
+
+单向链表，采用递归的方式操作链表节点，对于线性数据结构来说，递归不是一个非常好的方式，容易爆栈。
+
+- [LinkedListWithTail](https://github.com/Chanmoey/algorithm-and-data-structures-java/blob/main/src/main/java/com/moon/classicalalgorithm/linkedlist/LinkedListWithTail.java)
+
+单向链表，但是添加了尾指针，方便O(1)实现队列和栈。
+
